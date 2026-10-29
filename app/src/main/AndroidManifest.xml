@@ -10,10 +10,10 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Sensor Inteligente"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication">
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
 
         <!-- Login como pantalla principal -->
         <activity
@@ -25,10 +25,10 @@
             </intent-filter>
         </activity>
 
-        <!-- Dashboard -->
-        <activity
-            android:name=".DashboardActivity"
-            android:exported="false" />
+        <activity android:name=".MainActivity" android:exported="false" />
+        <activity android:name=".RegisterActivity" android:exported="false" />
+        <activity android:name=".AdminActivity" android:exported="false" />
+        <activity android:name=".DashboardActivity" android:exported="false" />
 
     </application>
 </manifest>

@@ -19,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
+        val btnGoToRegister = findViewById<Button>(R.id.btnGoToRegister)
 
         btnLogin.setOnClickListener {
             val user = etUsername.text.toString().trim()
@@ -29,13 +30,24 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (dbHelper.checkUser(user, pass)) {
-                Toast.makeText(this, "Acceso Autorizado", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, DashboardActivity::class.java))
+            val role = dbHelper.authenticateUser(user, pass)
+
+            if (role != null) {
+                Toast.makeText(this, "Acceso Autorizado ($role)", Toast.LENGTH_SHORT).show()
+
+                if (role == "admin") {
+                    startActivity(Intent(this, AdminActivity::class.java))
+                } else {
+                    startActivity(Intent(this, DashboardActivity::class.java))
+                }
                 finish()
             } else {
                 Toast.makeText(this, "Credenciales Inválidas", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        btnGoToRegister.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 }

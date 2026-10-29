@@ -14,7 +14,6 @@
         android:textStyle="bold"
         android:layout_marginBottom="20dp"/>
 
-    <!-- Panel de visualización de datos -->
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="match_parent"
