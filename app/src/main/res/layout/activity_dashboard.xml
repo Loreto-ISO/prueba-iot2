@@ -75,6 +75,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/bg_card_clean"
             android:orientation="vertical"
             android:padding="16dp">
@@ -133,6 +134,18 @@
                 android:text="WiFi: Desconectado"
                 android:textColor="#64748B"
                 android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnOpenControl"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_btn_primary"
+                android:text="Controlar dispositivo"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
