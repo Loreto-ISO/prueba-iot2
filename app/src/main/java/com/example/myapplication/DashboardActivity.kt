@@ -42,6 +42,9 @@ class DashboardActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnOpenControl).setOnClickListener {
             startActivity(Intent(this, ControlActivity::class.java))
         }
+        findViewById<Button>(R.id.btnOpenHistory).setOnClickListener {
+            startActivity(Intent(this, HistoryActivity::class.java))
+        }
 
         observeDeviceState()
     }

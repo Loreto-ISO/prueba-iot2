@@ -29,6 +29,34 @@ class FirebaseDatabaseRepository(
         deviceRoot(deviceId).child("state").removeEventListener(listener)
     }
 
+    fun observeDeviceEvents(
+        deviceId: String,
+        onEvents: (List<DeviceEvent>) -> Unit,
+        onError: (DatabaseError) -> Unit
+    ): ValueEventListener {
+        val eventsQuery = deviceRoot(deviceId).child("events").orderByChild("createdAt").limitToLast(100)
+        val listener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val events = snapshot.children.mapNotNull { child ->
+                    child.getValue(DeviceEvent::class.java)?.also { event ->
+                        if (event.eventId.isBlank()) event.eventId = child.key.orEmpty()
+                        if (event.deviceId.isBlank()) event.deviceId = deviceId
+                    }
+                }.sortedByDescending { it.createdAt }
+                onEvents(events)
+            }
+
+            override fun onCancelled(error: DatabaseError) = onError(error)
+        }
+        eventsQuery.addValueEventListener(listener)
+        return listener
+    }
+
+    fun removeDeviceEventsListener(deviceId: String, listener: ValueEventListener) {
+        deviceRoot(deviceId).child("events").orderByChild("createdAt").limitToLast(100)
+            .removeEventListener(listener)
+    }
+
     fun sendCommand(deviceId: String, type: String, value: Boolean, userId: String) =
         deviceRoot(deviceId).child("commands").push().let { reference ->
             val command = DeviceCommand(

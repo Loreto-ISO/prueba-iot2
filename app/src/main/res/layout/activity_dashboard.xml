@@ -146,6 +146,17 @@
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnOpenHistory"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_btn_secondary"
+                android:text="Ver historial de eventos"
+                android:textAllCaps="false"
+                android:textColor="#1E3A5F"
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
