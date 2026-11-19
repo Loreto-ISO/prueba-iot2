@@ -55,16 +55,27 @@
                 android:background="@drawable/bg_status_safe"
                 android:gravity="center"
                 android:padding="14dp"
-                android:text="Estado: Puerta Cerrada y Segura"
+                android:text="Consultando dispositivo..."
                 android:textAlignment="center"
-                android:textColor="#1B5E20"
+                android:textColor="#64748B"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvUpdatedAt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Última actualización: pendiente"
+                android:textColor="#64748B"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/bg_card_clean"
             android:orientation="vertical"
             android:padding="16dp">
@@ -72,55 +83,80 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="Controles de Simulación (Sin Arduino)"
-                android:textColor="#1A1D20"
-                android:textSize="15sp"
+                android:layout_marginBottom="14dp"
+                android:text="TELEMETRÍA DEL DISPOSITIVO"
+                android:textColor="#64748B"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvDistance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                android:text="Prueba los escenarios de proximidad, apertura y cierre de puerta."
+                android:paddingVertical="8dp"
+                android:text="Distancia: Sin lectura"
+                android:textColor="#1A1D20"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDoor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="Puerta: No disponible"
                 android:textColor="#64748B"
-                android:textSize="13sp" />
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvLed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="LED: No disponible"
+                android:textColor="#64748B"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvBuzzer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="Buzzer: No disponible"
+                android:textColor="#64748B"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvWifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
+                android:text="WiFi: Desconectado"
+                android:textColor="#64748B"
+                android:textSize="16sp" />
 
             <Button
-                android:id="@+id/btnSimularProximidad"
+                android:id="@+id/btnOpenControl"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_btn_warning"
-                android:text="Simular: Movimiento Detectado (Ultrasonido)"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_btn_primary"
+                android:text="Controlar dispositivo"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/btnSimularApertura"
+                android:id="@+id/btnOpenHistory"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_btn_danger"
-                android:text="Simular: Puerta Abierta (Botón/Magnético)"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnSimularCierre"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_btn_secondary"
-                android:text="Simular: Puerta Cerrada (Reinicio)"
+                android:text="Ver historial de eventos"
                 android:textAllCaps="false"
                 android:textColor="#1E3A5F"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

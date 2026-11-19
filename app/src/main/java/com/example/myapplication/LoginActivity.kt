@@ -2,52 +2,71 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.data.FirebaseAuthRepository
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var dbHelper: DatabaseHelper
+    private val authRepository = FirebaseAuthRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        dbHelper = DatabaseHelper(this)
+        if (authRepository.currentUser != null) {
+            openDashboard()
+            return
+        }
 
-        val etUsername = findViewById<EditText>(R.id.etUsername)
-        val etPassword = findViewById<EditText>(R.id.etPassword)
-        val btnLogin = findViewById<Button>(R.id.btnLogin)
-        val btnGoToRegister = findViewById<Button>(R.id.btnGoToRegister)
+        val emailInput = findViewById<EditText>(R.id.etUsername)
+        val passwordInput = findViewById<EditText>(R.id.etPassword)
+        val loginButton = findViewById<Button>(R.id.btnLogin)
+        val registerButton = findViewById<Button>(R.id.btnGoToRegister)
+        val resetButton = findViewById<Button>(R.id.btnResetPassword)
 
-        btnLogin.setOnClickListener {
-            val user = etUsername.text.toString().trim()
-            val pass = etPassword.text.toString().trim()
+        loginButton.setOnClickListener {
+            val email = emailInput.text.toString().trim()
+            val password = passwordInput.text.toString()
 
-            if (user.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                emailInput.error = getString(R.string.invalid_email)
+                return@setOnClickListener
+            }
+            if (password.isEmpty()) {
+                passwordInput.error = getString(R.string.required_password)
                 return@setOnClickListener
             }
 
-            val role = dbHelper.authenticateUser(user, pass)
-
-            if (role != null) {
-                Toast.makeText(this, "Acceso Autorizado ($role)", Toast.LENGTH_SHORT).show()
-
-                if (role == "admin") {
-                    startActivity(Intent(this, AdminActivity::class.java))
-                } else {
-                    startActivity(Intent(this, DashboardActivity::class.java))
+            loginButton.isEnabled = false
+            authRepository.signIn(email, password)
+                .addOnSuccessListener { openDashboard() }
+                .addOnFailureListener { error ->
+                    loginButton.isEnabled = true
+                    Toast.makeText(this, error.localizedMessage ?: getString(R.string.login_error), Toast.LENGTH_LONG).show()
                 }
-                finish()
-            } else {
-                Toast.makeText(this, "Credenciales Inválidas", Toast.LENGTH_SHORT).show()
-            }
         }
 
-        btnGoToRegister.setOnClickListener {
+        resetButton.setOnClickListener {
+            val email = emailInput.text.toString().trim()
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                emailInput.error = getString(R.string.invalid_email)
+                return@setOnClickListener
+            }
+            authRepository.sendPasswordReset(email)
+                .addOnSuccessListener { Toast.makeText(this, R.string.reset_sent, Toast.LENGTH_LONG).show() }
+                .addOnFailureListener { error -> Toast.makeText(this, error.localizedMessage ?: getString(R.string.reset_error), Toast.LENGTH_LONG).show() }
+        }
+
+        registerButton.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+    }
+
+    private fun openDashboard() {
+        startActivity(Intent(this, DashboardActivity::class.java))
+        finish()
     }
 }

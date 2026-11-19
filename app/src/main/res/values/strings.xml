@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Hogar Seguro IoT</string>
+    <string name="invalid_email">Ingresa un correo electrónico válido</string>
+    <string name="required_password">Ingresa tu contraseña</string>
+    <string name="login_error">No fue posible iniciar sesión</string>
+    <string name="reset_sent">Revisa tu correo para restablecer la contraseña</string>
+    <string name="reset_error">No fue posible enviar el correo de recuperación</string>
+    <string name="password_requirements">La contraseña debe tener al menos 8 caracteres</string>
+    <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
+    <string name="account_created">Cuenta creada correctamente</string>
+    <string name="register_error">No fue posible crear la cuenta</string>
 </resources>
