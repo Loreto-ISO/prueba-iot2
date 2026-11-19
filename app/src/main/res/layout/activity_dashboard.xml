@@ -1,55 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="32dp"
-    android:gravity="center">
+    android:background="#F4F6F9"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Monitor Inteligente IoT"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp"/>
-
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="Estado: Puerta Cerrada y Segura"
-        android:textSize="18sp"
-        android:textColor="#009900"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:background="#EEEEEE"
-        android:layout_marginBottom="40dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Controles de Simulación (Sin Arduino)"
-        android:textSize="14sp"
-        android:textStyle="italic"
-        android:layout_marginBottom="10dp"/>
-
-    <Button
-        android:id="@+id/btnSimularProximidad"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Simular: Movimiento Detectado (Ultrasonido)"/>
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <Button
-        android:id="@+id/btnSimularApertura"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Simular: Puerta Abierta (Botón/Magnético)"
-        android:backgroundTint="#FF0000"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:letterSpacing="0.08"
+            android:text="CONTROL DE ACCESO EN EL HOGAR"
+            android:textColor="#1E3A5F"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnSimularCierre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Simular: Puerta Cerrada (Reinicio)"/>
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Monitor Inteligente IoT"
+            android:textColor="#1A1D20"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:background="@drawable/bg_card_clean"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:letterSpacing="0.05"
+                android:text="ESTADO ACTUAL DEL SISTEMA"
+                android:textColor="#64748B"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="match_parent"
+                android:layout_height="104dp"
+                android:background="@drawable/bg_status_safe"
+                android:gravity="center"
+                android:padding="14dp"
+                android:text="Estado: Puerta Cerrada y Segura"
+                android:textAlignment="center"
+                android:textColor="#1B5E20"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card_clean"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Controles de Simulación (Sin Arduino)"
+                android:textColor="#1A1D20"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:text="Prueba los escenarios de proximidad, apertura y cierre de puerta."
+                android:textColor="#64748B"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btnSimularProximidad"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_btn_warning"
+                android:text="Simular: Movimiento Detectado (Ultrasonido)"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnSimularApertura"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_btn_danger"
+                android:text="Simular: Puerta Abierta (Botón/Magnético)"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnSimularCierre"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_btn_secondary"
+                android:text="Simular: Puerta Cerrada (Reinicio)"
+                android:textAllCaps="false"
+                android:textColor="#1E3A5F"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
