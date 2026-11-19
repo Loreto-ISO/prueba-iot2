@@ -120,8 +120,8 @@ class DashboardActivity : AppCompatActivity() {
 
     companion object {
         private const val PROXIMITY_WARNING_CM = 100.0
-        private const val COLOR_SAFE = Color.rgb(27, 94, 32)
-        private const val COLOR_WARNING = Color.rgb(230, 126, 34)
-        private const val COLOR_ALERT = Color.rgb(198, 40, 40)
+        private val COLOR_SAFE = Color.rgb(27, 94, 32)
+        private val COLOR_WARNING = Color.rgb(230, 126, 34)
+        private val COLOR_ALERT = Color.rgb(198, 40, 40)
     }
 }
