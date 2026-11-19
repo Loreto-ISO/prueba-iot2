@@ -16,8 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:letterSpacing="0.08"
-            android:text="CREAR CUENTA AUTORIZADA"
+            android:text="CREAR CUENTA"
             android:textColor="#1E3A5F"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -25,21 +24,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:gravity="center"
-            android:text="Registro de Padres / Tutores"
+            android:layout_marginBottom="24dp"
+            android:text="Registro seguro"
             android:textColor="#1A1D20"
             android:textSize="24sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:gravity="center"
-            android:text="Supervisión de zonas de riesgo y alertas del hogar"
-            android:textColor="#5C6672"
-            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
-                android:text="Nombre de usuario"
+                android:text="Correo electrónico"
                 android:textColor="#334155"
                 android:textSize="13sp"
                 android:textStyle="bold" />
@@ -63,13 +52,12 @@
                 android:layout_height="48dp"
                 android:layout_marginBottom="14dp"
                 android:background="@drawable/bg_input_clean"
-                android:hint="Elige un nombre de usuario"
-                android:inputType="text"
+                android:hint="correo@ejemplo.com"
+                android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:paddingHorizontal="14dp"
                 android:textColor="#1A1D20"
-                android:textColorHint="#94A3B8"
-                android:textSize="15sp" />
+                android:textColorHint="#94A3B8" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -86,22 +74,12 @@
                 android:layout_height="48dp"
                 android:layout_marginBottom="14dp"
                 android:background="@drawable/bg_input_clean"
-                android:hint="Crea una contraseña"
+                android:hint="Mínimo 8 caracteres"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:paddingHorizontal="14dp"
                 android:textColor="#1A1D20"
-                android:textColorHint="#94A3B8"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:text="Confirmar Contraseña"
-                android:textColor="#334155"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:textColorHint="#94A3B8" />
 
             <EditText
                 android:id="@+id/etConfirmPassword"
@@ -114,20 +92,17 @@
                 android:maxLines="1"
                 android:paddingHorizontal="14dp"
                 android:textColor="#1A1D20"
-                android:textColorHint="#94A3B8"
-                android:textSize="15sp" />
+                android:textColorHint="#94A3B8" />
 
             <Button
                 android:id="@+id/btnRegisterSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/bg_btn_primary"
-                android:text="Crear Cuenta"
+                android:text="Crear cuenta"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

@@ -1,47 +1,25 @@
-## PERDON CAMBIE UN POQUITO ESTO :), estoes de prueba
-
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-
-
-# Gradle / Kotlin
-.gradle/
-build/
-local.properties
-
 # Android Studio / IntelliJ
-*.iml
 .idea/
+*.iml
 *.ipr
 *.iws
 out/
 
-# Android build outputs
-*.apk
-*.aab
-output-metadata.json
+# Gradle / builds
+.gradle/
+/build/
+/app/build/
+local.properties
+captures/
 .externalNativeBuild/
 .cxx/
 
-# Profiling / Signing / Secrets
-*.hprof
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# Signing and secrets
 *.jks
 *.keystore
 keystore.properties
-# google-services.json (ignorar si contiene claves API sensibles)
-
-# OS / Editor
-# .DS_Store
-Thumbs.db
-*.swp
