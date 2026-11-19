@@ -1,4 +1,5 @@
-*.iml
+## PERDON CAMBIE UN POQUITO ESTO :), estoes de prueba
+
 .gradle
 /local.properties
 /.idea/caches
@@ -12,4 +13,35 @@
 /captures
 .externalNativeBuild
 .cxx
+
+
+# Gradle / Kotlin
+.gradle/
+build/
 local.properties
+
+# Android Studio / IntelliJ
+*.iml
+.idea/
+*.ipr
+*.iws
+out/
+
+# Android build outputs
+*.apk
+*.aab
+output-metadata.json
+.externalNativeBuild/
+.cxx/
+
+# Profiling / Signing / Secrets
+*.hprof
+*.jks
+*.keystore
+keystore.properties
+# google-services.json (ignorar si contiene claves API sensibles)
+
+# OS / Editor
+# .DS_Store
+Thumbs.db
+*.swp
