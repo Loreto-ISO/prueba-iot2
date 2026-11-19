@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "674063687313",
+    "firebase_url": "https://appaquiles-11f2b-default-rtdb.firebaseio.com",
     "project_id": "appaquiles-11f2b",
     "storage_bucket": "appaquiles-11f2b.firebasestorage.app"
   },
@@ -12,7 +13,12 @@
           "package_name": "com.example.myapplication"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "674063687313-ii7fu5c8eked46o5ms2emp4ak17pqvgk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCWe2bYqABKlr9aZ2XqlwnB8zr_ucEIEFY"
@@ -20,7 +26,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674063687313-ii7fu5c8eked46o5ms2emp4ak17pqvgk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
