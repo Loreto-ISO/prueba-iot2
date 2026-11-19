@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("com.google.gms.google-services") version "4.6.0" apply false
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -27,6 +27,7 @@ android {
             }
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -34,6 +35,11 @@ android {
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-database")
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
+
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
@@ -42,5 +48,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
-    implementation(platform("com.google.firebase:firebase-bom:35.2.0"))
 }
