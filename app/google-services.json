@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "252483506513",
+    "project_id": "aquiles-413b4",
+    "storage_bucket": "aquiles-413b4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252483506513:android:8bef706cdae8feabaa8370",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlOQOXrphyGGB06h1di4qzVQIxqy6ws94"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

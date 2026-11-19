@@ -1,38 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="32dp"
-    android:gravity="center">
+    android:background="#F4F6F9"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Panel Administrador / Pruebas"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="#9C27B0"
-        android:layout_marginBottom="20dp"/>
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Modo Administrador activado. Puedes probar la interfaz del sensor o gestionar el sistema."
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_marginBottom="30dp"/>
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <Button
-        android:id="@+id/btnGoToDashboardTest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Abrir Monitor de Sensores (Pruebas)"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card_clean"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="22dp">
 
-    <Button
-        android:id="@+id/btnLogoutAdmin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cerrar Sesión"
-        android:backgroundTint="#666666"
-        android:layout_marginTop="20dp"/>
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:letterSpacing="0.08"
+                android:text="ROL ADMINISTRADOR"
+                android:textColor="#1E3A5F"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="Panel Administrador / Pruebas"
+                android:textColor="#1A1D20"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:text="Modo Administrador activado. Puedes probar la interfaz del sensor o gestionar el sistema."
+                android:textColor="#5C6672"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnGoToDashboardTest"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_btn_primary"
+                android:text="Abrir Monitor de Sensores (Pruebas)"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnLogoutAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_btn_secondary"
+                android:text="Cerrar Sesión"
+                android:textAllCaps="false"
+                android:textColor="#475569"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

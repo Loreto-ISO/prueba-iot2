@@ -1,46 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="32dp"
-    android:gravity="center">
+    android:background="#F4F6F9"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registro de Padres / Tutores"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp"/>
-
-    <EditText
-        android:id="@+id/etRegisterUsername"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nombre de usuario"
-        android:inputType="text"
-        android:layout_marginBottom="16dp"/>
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <EditText
-        android:id="@+id/etRegisterPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
-        android:layout_marginBottom="16dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:letterSpacing="0.08"
+            android:text="CREAR CUENTA AUTORIZADA"
+            android:textColor="#1E3A5F"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/etConfirmPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Confirmar Contraseña"
-        android:inputType="textPassword"
-        android:layout_marginBottom="24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:gravity="center"
+            android:text="Registro de Padres / Tutores"
+            android:textColor="#1A1D20"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnRegisterSubmit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Crear Cuenta"/>
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="Supervisión de zonas de riesgo y alertas del hogar"
+            android:textColor="#5C6672"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card_clean"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Nombre de usuario"
+                android:textColor="#334155"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etRegisterUsername"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="14dp"
+                android:background="@drawable/bg_input_clean"
+                android:hint="Elige un nombre de usuario"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingHorizontal="14dp"
+                android:textColor="#1A1D20"
+                android:textColorHint="#94A3B8"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Contraseña"
+                android:textColor="#334155"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etRegisterPassword"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="14dp"
+                android:background="@drawable/bg_input_clean"
+                android:hint="Crea una contraseña"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingHorizontal="14dp"
+                android:textColor="#1A1D20"
+                android:textColorHint="#94A3B8"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Confirmar Contraseña"
+                android:textColor="#334155"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="22dp"
+                android:background="@drawable/bg_input_clean"
+                android:hint="Repite tu contraseña"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingHorizontal="14dp"
+                android:textColor="#1A1D20"
+                android:textColorHint="#94A3B8"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btnRegisterSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_btn_primary"
+                android:text="Crear Cuenta"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
