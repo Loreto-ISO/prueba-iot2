@@ -4,17 +4,19 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.data.FirebaseAuthRepository
 import com.example.myapplication.data.FirebaseDatabaseRepository
 import com.example.myapplication.model.DeviceState
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import java.text.DateFormat
 import java.util.Date
 
 class DashboardActivity : AppCompatActivity() {
+    private val authRepository = FirebaseAuthRepository()
     private val databaseRepository = FirebaseDatabaseRepository()
     private var stateListener: ValueEventListener? = null
     private val deviceId = "casa-01"
@@ -29,6 +31,12 @@ class DashboardActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (authRepository.currentUser == null) {
+            goToLogin()
+            return
+        }
+
         setContentView(R.layout.activity_dashboard)
 
         tvStatus = findViewById(R.id.tvStatus)
@@ -39,14 +47,97 @@ class DashboardActivity : AppCompatActivity() {
         tvWifi = findViewById(R.id.tvWifi)
         tvUpdatedAt = findViewById(R.id.tvUpdatedAt)
 
-        findViewById<Button>(R.id.btnOpenControl).setOnClickListener {
-            startActivity(Intent(this, ControlActivity::class.java))
-        }
-        findViewById<Button>(R.id.btnOpenHistory).setOnClickListener {
-            startActivity(Intent(this, HistoryActivity::class.java))
+        setupControlButtons()
+        setupBottomNavigation()
+        observeDeviceState()
+    }
+
+    private fun setupControlButtons() {
+        val btnLedOn = findViewById<Button>(R.id.btnLedOn)
+        val btnLedOff = findViewById<Button>(R.id.btnLedOff)
+        val btnBuzzerOn = findViewById<Button>(R.id.btnBuzzerOn)
+        val btnBuzzerOff = findViewById<Button>(R.id.btnBuzzerOff)
+
+        btnLedOn.setOnClickListener {
+            sendActuatorCommand(
+                type = "SET_LED",
+                value = true,
+                eventTitle = "LED_ON",
+                eventMessage = "Luz preventiva encendida remotamente desde la app",
+                toastMessage = "Comando enviado: Encender LED"
+            )
         }
 
-        observeDeviceState()
+        btnLedOff.setOnClickListener {
+            sendActuatorCommand(
+                type = "SET_LED",
+                value = false,
+                eventTitle = "LED_OFF",
+                eventMessage = "Luz preventiva apagada remotamente desde la app",
+                toastMessage = "Comando enviado: Apagar LED"
+            )
+        }
+
+        btnBuzzerOn.setOnClickListener {
+            sendActuatorCommand(
+                type = "SET_BUZZER",
+                value = true,
+                eventTitle = "BUZZER_ON",
+                eventMessage = "Alarma sonora activada manualmente desde la app",
+                toastMessage = "Comando enviado: Activar Buzzer"
+            )
+        }
+
+        btnBuzzerOff.setOnClickListener {
+            sendActuatorCommand(
+                type = "SET_BUZZER",
+                value = false,
+                eventTitle = "BUZZER_OFF",
+                eventMessage = "Alarma sonora silenciada desde la app",
+                toastMessage = "Comando enviado: Silenciar Buzzer"
+            )
+        }
+    }
+
+    private fun sendActuatorCommand(
+        type: String,
+        value: Boolean,
+        eventTitle: String,
+        eventMessage: String,
+        toastMessage: String
+    ) {
+        val user = authRepository.currentUser
+        val userIdentifier = user?.email ?: user?.uid ?: "usuario_autorizado"
+
+        databaseRepository.sendCommand(deviceId, type, value, userIdentifier)
+            .addOnSuccessListener {
+                databaseRepository.appendEvent(deviceId, eventTitle, eventMessage, userIdentifier)
+                Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { error ->
+                Toast.makeText(
+                    this,
+                    "Error al enviar instrucción: ${error.localizedMessage}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+    }
+
+    private fun setupBottomNavigation() {
+        val navBuscar = findViewById<LinearLayout>(R.id.navBuscar)
+        val navPerfil = findViewById<LinearLayout>(R.id.navPerfil)
+
+        navBuscar.setOnClickListener {
+            startActivity(Intent(this, HistoryActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish()
+        }
+
+        navPerfil.setOnClickListener {
+            startActivity(Intent(this, AdminActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish()
+        }
     }
 
     private fun observeDeviceState() {
@@ -54,7 +145,11 @@ class DashboardActivity : AppCompatActivity() {
             deviceId = deviceId,
             onState = { state ->
                 runOnUiThread {
-                    if (state == null) showUnavailableState() else renderState(state)
+                    if (state == null) {
+                        showUnavailableState()
+                    } else {
+                        renderState(state)
+                    }
                 }
             },
             onError = { error ->
@@ -71,20 +166,29 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun renderState(state: DeviceState) {
-        tvDistance.text = if (state.distanceCm > 0) "%.1f cm".format(state.distanceCm) else "Sin lectura"
-        tvDoor.text = if (state.doorOpen) "Puerta: Abierta" else "Puerta: Cerrada"
+        tvDistance.text = if (state.distanceCm > 0) {
+            "%.1f cm".format(state.distanceCm)
+        } else {
+            "Sin lectura"
+        }
+
+        tvDoor.text = if (state.doorOpen) "Abierta" else "Cerrada"
         tvDoor.setTextColor(if (state.doorOpen) COLOR_ALERT else COLOR_SAFE)
-        tvLed.text = if (state.ledOn) "LED: Encendido" else "LED: Apagado"
+
+        tvLed.text = if (state.ledOn) "Encendido" else "Apagado"
         tvLed.setTextColor(if (state.ledOn) COLOR_WARNING else COLOR_SAFE)
-        tvBuzzer.text = if (state.buzzerOn) "Buzzer: Activo" else "Buzzer: Inactivo"
+
+        tvBuzzer.text = if (state.buzzerOn) "Activo" else "Inactivo"
         tvBuzzer.setTextColor(if (state.buzzerOn) COLOR_ALERT else COLOR_SAFE)
-        tvWifi.text = if (state.wifiConnected) "WiFi: Conectado" else "WiFi: Desconectado"
+
+        tvWifi.text = if (state.wifiConnected) "● Conectado" else "● Desconectado"
         tvWifi.setTextColor(if (state.wifiConnected) COLOR_SAFE else COLOR_ALERT)
 
-        val proximityDetected = state.distanceCm > 0 && state.distanceCm <= PROXIMITY_WARNING_CM
+        val proximityDetected = state.distanceCm in 0.1..PROXIMITY_WARNING_CM
+
         tvStatus.text = when {
             !state.wifiConnected -> "🔴 Sin conexión con el dispositivo"
-            state.doorOpen -> "🔴 ALERTA: Puerta abierta"
+            state.doorOpen -> "🔴 ALERTA CRÍTICA: Puerta abierta"
             proximityDetected -> "🟡 Advertencia: proximidad detectada"
             else -> "🟢 Seguro: sistema operativo"
         }
@@ -95,21 +199,29 @@ class DashboardActivity : AppCompatActivity() {
                 else -> COLOR_SAFE
             }
         )
+
         tvUpdatedAt.text = if (state.updatedAt > 0) {
             "Última actualización: ${DateFormat.getDateTimeInstance().format(Date(state.updatedAt))}"
-        } else "Última actualización: pendiente"
+        } else {
+            "Última actualización: en espera de telemetría"
+        }
     }
 
     private fun showUnavailableState() {
         tvDistance.text = "Sin lectura"
-        tvDoor.text = "Puerta: No disponible"
-        tvLed.text = "LED: No disponible"
-        tvBuzzer.text = "Buzzer: No disponible"
-        tvWifi.text = "WiFi: Desconectado"
-        tvWifi.setTextColor(COLOR_ALERT)
-        tvStatus.text = "🔴 No hay datos del dispositivo"
-        tvStatus.setTextColor(COLOR_ALERT)
+        tvDoor.text = "En espera"
+        tvLed.text = "Apagado"
+        tvBuzzer.text = "Inactivo"
+        tvWifi.text = "● En espera"
+        tvWifi.setTextColor(COLOR_WARNING)
+        tvStatus.text = "🟡 Esperando conexión del nodo IoT"
+        tvStatus.setTextColor(COLOR_WARNING)
         tvUpdatedAt.text = "Última actualización: pendiente"
+    }
+
+    private fun goToLogin() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     override fun onDestroy() {
@@ -120,8 +232,8 @@ class DashboardActivity : AppCompatActivity() {
 
     companion object {
         private const val PROXIMITY_WARNING_CM = 100.0
-        private val COLOR_SAFE = Color.rgb(27, 94, 32)
-        private val COLOR_WARNING = Color.rgb(230, 126, 34)
-        private val COLOR_ALERT = Color.rgb(198, 40, 40)
+        private val COLOR_SAFE = Color.rgb(22, 163, 74)
+        private val COLOR_WARNING = Color.rgb(217, 119, 6)
+        private val COLOR_ALERT = Color.rgb(220, 38, 38)
     }
 }
