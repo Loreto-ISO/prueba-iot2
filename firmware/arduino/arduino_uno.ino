@@ -1,200 +1,116 @@
-#include <Arduino.h>
-#include <stdlib.h>
-#include <string.h>
+#include <SoftwareSerial.h>
 
-const uint8_t LED_PIN = 4;
-const uint8_t BUZZER_PIN = 5;
-const uint8_t BUTTON_PIN = 6;
-const uint8_t TRIG_PIN = 7;
-const uint8_t ECHO_PIN = 8;
+// Pin 10 = RX Arduino (al TXD del HC-05) | Pin 11 = TX Arduino (al RXD del HC-05)
+SoftwareSerial bluetooth(10, 11);
 
-const unsigned long SERIAL_BAUD = 9600;
-const unsigned long SAMPLE_INTERVAL_MS = 500;
-const unsigned long ECHO_TIMEOUT_US = 30000UL;
-const unsigned int MAX_COMMAND_LENGTH = 32;
-const float WARNING_DISTANCE_CM = 100.0f;
+// --- PINES CONFIRMADOS ---
+const int PIN_LED    = 3;
+const int PIN_BOTON  = 4;
+const int PIN_BUZZER = 6;
+const int PIN_ECHO   = 12;
+const int PIN_TRIG   = 13;
 
-bool ledOn = false;
-bool buzzerOn = false;
-bool lastButtonReading = HIGH;
-bool doorOpen = false;
-unsigned long lastDebounceTime = 0;
-unsigned long lastSampleTime = 0;
-char commandBuffer[MAX_COMMAND_LENGTH + 1];
-unsigned int commandLength = 0;
-bool commandOverflow = false;
+// --- CONFIGURACIÓN ---
+const bool BUZZER_ACTIVO_EN_BAJO   = false; // true si suena cuando debería callar
+const bool BOTON_SUELTO_ES_ALERTA  = false; // false = alarma solo al presionar el botón
+const int DISTANCIA_ADVERTENCIA_CM = 150;
+const unsigned long INTERVALO_BT_MS = 1000;
 
-float measureDistance();
-bool readDoorState();
-void updateOutputs();
-void sendTelemetry();
-void processCommand(String command);
-bool isValidCommand(String command);
-void readSerialCommands();
-void sendAck(const char *command, const char *status);
+// --- VELOCIDAD DEL BUZZER (en milisegundos) ---
+const unsigned long TIEMPO_PITIDO_MS   = 120; // Duración de cada pitido
+const unsigned long TIEMPO_SILENCIO_MS = 120; // Pausa entre pitidos (baja este número para más rapidez)
+
+unsigned long ultimoEnvioBT = 0;
+unsigned long ultimoPulsoBuzzer = 0;
+bool pulsoActivo = false;
+String estadoAnterior = "";
+
+void controlarBuzzer(bool encender) {
+  if (BUZZER_ACTIVO_EN_BAJO) {
+    digitalWrite(PIN_BUZZER, encender ? LOW : HIGH);
+  } else {
+    digitalWrite(PIN_BUZZER, encender ? HIGH : LOW);
+  }
+}
+
+void sonarIntermitente(unsigned long ahora) {
+  unsigned long intervalo = pulsoActivo ? TIEMPO_PITIDO_MS : TIEMPO_SILENCIO_MS;
+  if (ahora - ultimoPulsoBuzzer >= intervalo) {
+    ultimoPulsoBuzzer = ahora;
+    pulsoActivo = !pulsoActivo;
+    controlarBuzzer(pulsoActivo);
+  }
+}
 
 void setup() {
-  pinMode(LED_PIN, OUTPUT);
-  pinMode(BUZZER_PIN, OUTPUT);
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
-  pinMode(TRIG_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
+  Serial.begin(9600);
+  bluetooth.begin(9600);
 
-  digitalWrite(TRIG_PIN, LOW);
-  digitalWrite(LED_PIN, LOW);
-  digitalWrite(BUZZER_PIN, LOW);
+  pinMode(PIN_LED, OUTPUT);
+  pinMode(PIN_BOTON, INPUT_PULLUP);
+  pinMode(PIN_BUZZER, OUTPUT);
+  pinMode(PIN_ECHO, INPUT);
+  pinMode(PIN_TRIG, OUTPUT);
 
-  Serial.begin(SERIAL_BAUD);
-  commandBuffer[0] = '\0';
-  doorOpen = readDoorState();
+  digitalWrite(PIN_LED, LOW);
+  controlarBuzzer(false);
+}
+
+long medirDistanciaCm() {
+  digitalWrite(PIN_TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(PIN_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(PIN_TRIG, LOW);
+
+  long duracion = pulseIn(PIN_ECHO, HIGH, 30000);
+  if (duracion == 0) return 999;
+  return duracion * 0.034 / 2;
 }
 
 void loop() {
-  readSerialCommands();
+  unsigned long ahora = millis();
 
-  const unsigned long now = millis();
-  if (now - lastSampleTime >= SAMPLE_INTERVAL_MS) {
-    lastSampleTime = now;
-    doorOpen = readDoorState();
-    updateOutputs();
-    sendTelemetry();
+  // 1. Lectura de sensores
+  int lecturaBoton = digitalRead(PIN_BOTON);
+  bool puertaAbierta = BOTON_SUELTO_ES_ALERTA ? (lecturaBoton == HIGH) : (lecturaBoton == LOW);
+  long distancia = medirDistanciaCm();
+  String estadoActual = "";
+
+  // 2. Lógica de los 3 estados
+  if (puertaAbierta) {
+    // ALERTA CRÍTICA: botón presionado
+    estadoActual = "ALERTA_CRITICA";
+    digitalWrite(PIN_LED, HIGH);
+    sonarIntermitente(ahora);
   }
-}
-
-float measureDistance() {
-  digitalWrite(TRIG_PIN, LOW);
-  delayMicroseconds(2);
-  digitalWrite(TRIG_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG_PIN, LOW);
-
-  const unsigned long duration = pulseIn(ECHO_PIN, HIGH, ECHO_TIMEOUT_US);
-  if (duration == 0) {
-    return -1.0f;
+  else if (distancia > 0 && distancia <= DISTANCIA_ADVERTENCIA_CM) {
+    // ADVERTENCIA: botón suelto + objeto <= distancia configurada
+    estadoActual = "ADVERTENCIA";
+    digitalWrite(PIN_LED, HIGH);
+    pulsoActivo = false;
+    controlarBuzzer(false);
   }
-
-  return (duration * 0.0343f) / 2.0f;
-}
-
-bool readDoorState() {
-  const bool reading = (digitalRead(BUTTON_PIN) == LOW);
-  const unsigned long now = millis();
-
-  if (reading != lastButtonReading) {
-    lastDebounceTime = now;
-    lastButtonReading = reading;
+  else {
+    // ESTADO SEGURO: botón suelto + sin objetos cerca
+    estadoActual = "SEGURO";
+    digitalWrite(PIN_LED, LOW);
+    pulsoActivo = false;
+    controlarBuzzer(false);
   }
 
-  static bool stableButtonState = false;
-  if (now - lastDebounceTime >= 40) {
-    stableButtonState = reading;
+  // 3. Envío por Bluetooth HC-05 y Monitor Serie
+  if (estadoActual != estadoAnterior || (ahora - ultimoEnvioBT >= INTERVALO_BT_MS)) {
+    ultimoEnvioBT = ahora;
+    estadoAnterior = estadoActual;
+
+    String mensajeJSON = "{\"estado\":\"" + estadoActual +
+                         "\",\"puertaAbierta\":" + String(puertaAbierta ? "true" : "false") +
+                         ",\"distanciaCm\":" + String(distancia) + "}";
+
+    bluetooth.println(mensajeJSON);
+    Serial.println(mensajeJSON);
   }
 
-  return stableButtonState;
-}
-
-void updateOutputs() {
-  digitalWrite(LED_PIN, ledOn ? HIGH : LOW);
-  digitalWrite(BUZZER_PIN, buzzerOn ? HIGH : LOW);
-}
-
-void sendTelemetry() {
-  const float distance = measureDistance();
-  const char *door = doorOpen ? "open" : "closed";
-  const char *state = "SAFE";
-
-  if (doorOpen) {
-    state = "ALERT";
-  } else if (distance >= 0.0f && distance <= WARNING_DISTANCE_CM) {
-    state = "WARNING";
-  }
-
-  Serial.print(F("{\"type\":\"telemetry\",\"distanceCm\":"));
-  if (distance < 0.0f) {
-    Serial.print(F("null"));
-  } else {
-    Serial.print(distance, 1);
-  }
-  Serial.print(F(",\"door\":\""));
-  Serial.print(door);
-  Serial.print(F("\",\"ledOn\":"));
-  Serial.print(ledOn ? F("true") : F("false"));
-  Serial.print(F(",\"buzzerOn\":"));
-  Serial.print(buzzerOn ? F("true") : F("false"));
-  Serial.print(F(",\"state\":\""));
-  Serial.print(state);
-  Serial.println(F("\"}"));
-}
-
-void processCommand(String command) {
-  command.trim();
-  command.toUpperCase();
-
-  if (!isValidCommand(command)) {
-    sendAck(command.c_str(), "REJECTED");
-    return;
-  }
-
-  if (command == "LED_ON") {
-    ledOn = true;
-  } else if (command == "LED_OFF") {
-    ledOn = false;
-  } else if (command == "BUZZER_ON") {
-    buzzerOn = true;
-  } else if (command == "BUZZER_OFF") {
-    buzzerOn = false;
-  }
-
-  updateOutputs();
-  sendAck(command.c_str(), "ACCEPTED");
-}
-
-bool isValidCommand(String command) {
-  command.trim();
-  command.toUpperCase();
-  return command == "LED_ON" ||
-         command == "LED_OFF" ||
-         command == "BUZZER_ON" ||
-         command == "BUZZER_OFF";
-}
-
-void readSerialCommands() {
-  while (Serial.available() > 0) {
-    const char incoming = static_cast<char>(Serial.read());
-
-    if (incoming == '\n') {
-      if (!commandOverflow && commandLength > 0) {
-        commandBuffer[commandLength] = '\0';
-        processCommand(String(commandBuffer));
-      } else if (commandOverflow) {
-        sendAck("", "REJECTED");
-      }
-
-      commandLength = 0;
-      commandOverflow = false;
-      commandBuffer[0] = '\0';
-      continue;
-    }
-
-    if (incoming == '\r') {
-      continue;
-    }
-
-    if (incoming < 32 || incoming > 126 || commandLength >= MAX_COMMAND_LENGTH) {
-      commandOverflow = true;
-      continue;
-    }
-
-    if (!commandOverflow) {
-      commandBuffer[commandLength++] = incoming;
-    }
-  }
-}
-
-void sendAck(const char *command, const char *status) {
-  Serial.print(F("{\"type\":\"ack\",\"command\":\""));
-  Serial.print(command);
-  Serial.print(F("\",\"status\":\""));
-  Serial.print(status);
-  Serial.println(F("\"}"));
+  delay(10);
 }

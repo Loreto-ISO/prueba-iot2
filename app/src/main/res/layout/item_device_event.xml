@@ -4,33 +4,52 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
     android:background="@drawable/bg_card_clean"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:elevation="2dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="14dp">
 
     <TextView
-        android:id="@+id/tvEventType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Evento"
-        android:textColor="#1E3A5F"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:id="@+id/tvEventIcon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:background="@drawable/bg_status_safe"
+        android:gravity="center"
+        android:text="🔔"
+        android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/tvEventMessage"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="Descripción del evento"
-        android:textColor="#334155"
-        android:textSize="14sp" />
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvEventTimestamp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Fecha y hora"
-        android:textColor="#64748B"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/tvEventTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Evento del sistema"
+            android:textColor="#0F172A"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvEventMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Descripción detallada de la alerta o comando ejecutado"
+            android:textColor="#475569"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvEventMeta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Hoy, 12:30 • usuario@correo.com"
+            android:textColor="#94A3B8"
+            android:textSize="11sp" />
+    </LinearLayout>
 </LinearLayout>
