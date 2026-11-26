@@ -1,12 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <string name="app_name">Hogar Seguro IoT</string>
-    <string name="invalid_email">Ingresa un correo electrónico válido</string>
-    <string name="required_password">Ingresa tu contraseña</string>
-    <string name="login_error">No fue posible iniciar sesión</string>
-    <string name="reset_sent">Revisa tu correo para restablecer la contraseña</string>
-    <string name="reset_error">No fue posible enviar el correo de recuperación</string>
-    <string name="password_requirements">La contraseña debe tener al menos 8 caracteres</string>
-    <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
-    <string name="account_created">Cuenta creada correctamente</string>
-    <string name="register_error">No fue posible crear la cuenta</string>
+
+    <string name="app_name">GUARDIANAPP</string>
+
+    <!-- Autenticación -->
+
+    <string name="login_title">
+        Monitoreo inteligente de zonas de riesgo en el hogar
+    </string>
+
+    <string name="invalid_email">
+        Ingresa un correo electrónico válido
+    </string>
+
+    <string name="required_password">
+        Ingresa tu contraseña
+    </string>
+
+    <string name="login_error">
+        No fue posible iniciar sesión
+    </string>
+
+    <string name="reset_sent">
+        Revisa tu correo para restablecer la contraseña
+    </string>
+
+    <string name="reset_error">
+        No fue posible enviar el correo de recuperación
+    </string>
+
+    <string name="password_requirements">
+        La contraseña debe tener al menos 8 caracteres
+    </string>
+
+    <string name="passwords_do_not_match">
+        Las contraseñas no coinciden
+    </string>
+
+    <string name="account_created">
+        Cuenta creada correctamente
+    </string>
+
+    <string name="register_error">
+        No fue posible crear la cuenta
+    </string>
+
+    <string name="login_button">
+        Iniciar sesión
+    </string>
+
+    <string name="register_button">
+        Crear cuenta
+    </string>
+
+    <string name="email_label">
+        Correo electrónico
+    </string>
+
+    <string name="password_label">
+        Contraseña
+    </string>
+
+    <string name="reset_password">
+        Recuperar contraseña
+    </string>
+
+    <!-- Inicio y navegación -->
+
+    <string name="welcome_default">
+        Bienvenido
+    </string>
+
+    <string name="tutor_welcome">
+        Bienvenido, %1$s
+    </string>
+
+    <string name="admin_home_title">
+        Panel de administración
+    </string>
+
+    <string name="home_name">
+        Usted se encuentra en: %1$s
+    </string>
+
+    <string name="home_name_default">
+        Usted se encuentra en: Casa 01
+    </string>
+
+    <string name="selected_door">
+        Puerta seleccionada: %1$s
+    </string>
+
+    <string name="nav_home">
+        Inicio
+    </string>
+
+    <string name="nav_search">
+        Buscar
+    </string>
+
+    <string name="nav_profile">
+        Perfil
+    </string>
+
+    <string name="connect_bluetooth">
+        Conectar dispositivo Bluetooth
+    </string>
+
+    <string name="find_doors">
+        Buscar puertas
+    </string>
+
+    <string name="open_profile">
+        Perfil
+    </string>
+
+    <string name="open_diagnostics">
+        Diagnóstico
+    </string>
+
+    <!-- Estados del sistema -->
+
+    <string name="state_safe">
+        Zona segura
+    </string>
+
+    <string name="state_warning">
+        Proximidad detectada
+    </string>
+
+    <string name="state_critical">
+        Alerta crítica
+    </string>
+
+    <string name="device_offline">
+        Dispositivo sin conexión
+    </string>
+
+    <string name="waiting_telemetry">
+        Esperando telemetría
+    </string>
+
+    <string name="sensor_no_reading">
+        Sensor sin lectura
+    </string>
+
+    <string name="sensor_pending">
+        Sensor pendiente de configuración
+    </string>
+
+    <string name="sensor_valid">
+        Sensor válido
+    </string>
+
+    <string name="no_data">
+        Sin datos
+    </string>
+
+    <string name="door_open">
+        Abierta
+    </string>
+
+    <string name="door_closed">
+        Cerrada
+    </string>
+
+    <string name="distance_value">
+        %1$d cm
+    </string>
+
+    <string name="on">
+        Encendido
+    </string>
+
+    <string name="off">
+        Apagado
+    </string>
+
+    <string name="active">
+        Activo
+    </string>
+
+    <string name="inactive">
+        Inactivo
+    </string>
+
+    <string name="last_read">
+        Última lectura: %1$s
+    </string>
+
+    <string name="none">
+        Ninguno
+    </string>
+
+    <!-- Bluetooth -->
+
+    <string name="bluetooth_state">
+        Estado Bluetooth: %1$s
+    </string>
+
+    <string name="bluetooth_disconnected">
+        Estado Bluetooth: desconectado
+    </string>
+
+    <string name="bluetooth_permission">
+        Se requiere permiso Bluetooth para continuar
+    </string>
+
+    <string name="bluetooth_not_available">
+        Este dispositivo no dispone de Bluetooth
+    </string>
+
+    <string name="bluetooth_disabled">
+        Bluetooth está desactivado. Actívalo e intenta nuevamente.
+    </string>
+
+    <string name="bluetooth_connected">
+        Bluetooth conectado
+    </string>
+
+    <string name="unknown_device">
+        Dispositivo sin nombre
+    </string>
+
+    <string name="no_paired_devices">
+        No existen dispositivos Bluetooth emparejados
+    </string>
+
+    <string name="hc05_not_paired">
+        El módulo HC-05 no aparece entre los dispositivos emparejados
+    </string>
+
+    <string name="hc05_ready">
+        HC-05 emparejado y listo para conectar
+    </string>
+
+    <string name="address_hidden">
+        Dirección protegida
+    </string>
+
+    <string name="last_valid_message">
+        Último mensaje: %1$s
+    </string>
+
+    <string name="reconnect">
+        Reconectar Bluetooth
+    </string>
+
+    <string name="disconnect">
+        Desconectar
+    </string>
+
+    <!-- Puertas -->
+
+    <string name="door_search_title">
+        Puertas del hogar
+    </string>
+
+    <string name="search_door_hint">
+        Buscar puerta
+    </string>
+
+    <string name="select_door">
+        Seleccionar
+    </string>
+
+    <string name="no_device">
+        Sin dispositivo conectado
+    </string>
+
+    <string name="pending_configuration">
+        Pendiente de configuración
+    </string>
+
+    <string name="device_configured">
+        Dispositivo configurado
+    </string>
+
+    <!-- Perfil -->
+
+    <string name="profile_title">
+        Perfil
+    </string>
+
+    <string name="role_admin">
+        Administrador
+    </string>
+
+    <string name="role_tutor">
+        Padre/Tutor
+    </string>
+
+    <string name="profile_error">
+        No fue posible cargar el perfil
+    </string>
+
+    <string name="change_password">
+        Enviar enlace para cambiar contraseña
+    </string>
+
+    <string name="contact_support">
+        Contactar servicio al cliente
+    </string>
+
+    <string name="support_email">
+        soporte@guardianapp.cl
+    </string>
+
+    <string name="support_subject">
+        Soporte GUARDIANAPP - Casa 01
+    </string>
+
+    <string name="no_mail_client">
+        No hay una aplicación de correo disponible
+    </string>
+
+    <string name="close_session">
+        Cerrar sesión
+    </string>
+
+    <string name="system_devices">
+        Arduino UNO, HC-05, HC-SR04, botón de puerta, LED y buzzer. Umbral: 150 cm. Bluetooth: 9600 baudios.
+    </string>
+
+    <string name="app_version">
+        Versión de la aplicación: 1.0
+    </string>
+
+    <!-- Control -->
+
+    <string name="control_title">
+        Control del dispositivo
+    </string>
+
+    <string name="control_description">
+        Los controles permanecerán desactivados hasta que exista una conexión Bluetooth y el firmware confirme la ejecución mediante ACK.
+    </string>
+
+    <string name="control_lighting">
+        ILUMINACIÓN
+    </string>
+
+    <string name="control_alarm">
+        ALARMA SONORA
+    </string>
+
+    <string name="led_on">
+        Encender LED
+    </string>
+
+    <string name="led_off">
+        Apagar LED
+    </string>
+
+    <string name="buzzer_on">
+        Activar buzzer
+    </string>
+
+    <string name="buzzer_off">
+        Desactivar buzzer
+    </string>
+
+    <string name="control_unavailable">
+        Sin conexión con Arduino
+    </string>
+
+    <string name="firmware_ack_required">
+        Los comandos estarán disponibles cuando el firmware pueda responder mediante ACK
+    </string>
+
+    <!-- Diagnóstico -->
+
+    <string name="diagnostics_title">
+        Diagnóstico técnico
+    </string>
+
+    <string name="diagnostics_details">
+        Bluetooth disponible: %1$b\nBluetooth activado: %2$b\nPermiso CONNECT: %3$b\nSocket: %4$s\nÚltimo mensaje: %5$s\nÚltimo ACK: %6$s\nÚltimo ERROR: %7$s\nSensor válido: %8$b\nDistancia: %9$d\nPuerta abierta: %10$b\nLED: %11$b\nBuzzer: %12$b\nMensajes válidos: %13$d\nMensajes inválidos: %14$d\nÚltima actualización: %15$s
+    </string>
+
+    <string name="admin_details">
+        ID del dispositivo: %1$s\nÚltimo mensaje: %2$s\nMensajes válidos: %3$d\nMensajes inválidos: %4$d\nÚltimo error: %5$s
+    </string>
+
+    <string name="mode_demo">
+        Modo demostración
+    </string>
+
+    <string name="demo_safe">
+        Probar estado seguro
+    </string>
+
+    <string name="demo_warning">
+        Probar advertencia
+    </string>
+
+    <string name="demo_critical">
+        Probar alerta crítica
+    </string>
+
+    <string name="demo_sensor_error">
+        Probar error de sensor
+    </string>
+
+    <string name="demo_offline">
+        Probar desconexión
+    </string>
+
+    <string name="available_with_firmware">
+        Disponible cuando el firmware admita comandos
+    </string>
+
+    <string name="request_status">
+        Solicitar estado
+    </string>
+
+    <string name="clear_log">
+        Limpiar registro visible
+    </string>
+
+    <!-- Historial -->
+
+    <string name="history_search_hint">
+        Filtrar eventos
+    </string>
+
+    <string name="history_empty">
+        Aún no hay eventos
+    </string>
+
+    <string name="no_history">
+        Aún no hay eventos registrados
+    </string>
+
+    <string name="error_entry">
+        Error: %1$s
+    </string>
+
 </resources>

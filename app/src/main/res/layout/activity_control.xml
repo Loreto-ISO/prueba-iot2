@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F6F9"
+    android:background="@color/guardian_background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -14,35 +16,47 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:letterSpacing="0.08"
-            android:text="HOGAR SEGURO IOT"
-            android:textColor="#1E3A5F"
+            android:text="@string/app_name"
+            android:textColor="@color/security_navy"
             android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Control del dispositivo"
-            android:textColor="#1A1D20"
+            android:layout_marginTop="4dp"
+            android:text="@string/control_title"
+            android:textColor="@color/guardian_text"
             android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvControlAvailability"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_guardian_card"
+            android:padding="14dp"
+            android:text="@string/control_unavailable"
+            android:textColor="@color/guardian_secondary"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="Los comandos se enviarán al dispositivo vinculado y quedarán pendientes hasta que el equipo los procese."
-            android:textColor="#64748B"
+            android:text="@string/control_description"
+            android:textColor="@color/guardian_secondary"
             android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_card_clean"
+            android:background="@drawable/bg_guardian_card"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -50,8 +64,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:text="ILUMINACIÓN"
-                android:textColor="#64748B"
+                android:text="@string/control_lighting"
+                android:textColor="@color/guardian_secondary"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -59,10 +73,11 @@
                 android:id="@+id/btnLedOn"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:background="@drawable/bg_btn_primary"
-                android:text="Encender LED"
+                android:backgroundTint="@color/guardian_blue"
+                android:enabled="false"
+                android:text="@string/led_on"
                 android:textAllCaps="false"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -71,17 +86,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bg_btn_secondary"
-                android:text="Apagar LED"
+                android:enabled="false"
+                android:text="@string/led_off"
                 android:textAllCaps="false"
-                android:textColor="#1E3A5F"
+                android:textColor="@color/security_navy"
                 android:textSize="15sp" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_card_clean"
+            android:background="@drawable/bg_guardian_card"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -89,8 +105,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:text="ALARMA SONORA"
-                android:textColor="#64748B"
+                android:text="@string/control_alarm"
+                android:textColor="@color/guardian_secondary"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -98,10 +114,11 @@
                 android:id="@+id/btnBuzzerOn"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:background="@drawable/bg_btn_danger"
-                android:text="Activar buzzer"
+                android:backgroundTint="@color/guardian_critical"
+                android:enabled="false"
+                android:text="@string/buzzer_on"
                 android:textAllCaps="false"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -110,11 +127,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bg_btn_secondary"
-                android:text="Desactivar buzzer"
+                android:enabled="false"
+                android:text="@string/buzzer_off"
                 android:textAllCaps="false"
-                android:textColor="#1E3A5F"
+                android:textColor="@color/security_navy"
                 android:textSize="15sp" />
+
         </LinearLayout>
+
     </LinearLayout>
+
 </ScrollView>
