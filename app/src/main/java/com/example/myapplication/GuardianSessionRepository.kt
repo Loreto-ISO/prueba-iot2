@@ -3,11 +3,11 @@ package com.example.myapplication
 import android.content.Context
 import android.content.SharedPreferences
 import android.bluetooth.BluetoothDevice
+import android.util.Log
 import java.text.DateFormat
 import java.util.Date
 import java.util.concurrent.CopyOnWriteArraySet
 
-/** Application-scoped observable state; callbacks never retain an Activity. */
 object GuardianSessionRepository {
     data class Snapshot(
         val role: String = ROLE_TUTOR,
@@ -26,35 +26,69 @@ object GuardianSessionRepository {
         val demoMode: Boolean = false
     )
     data class Door(val id: String, val name: String, val location: String, val connected: Boolean)
+
     private val observers = CopyOnWriteArraySet<(Snapshot) -> Unit>()
     @Volatile private var current = Snapshot()
-    private var preferences: SharedPreferences? = null
+    @Volatile private var preferences: SharedPreferences? = null
     val snapshot: Snapshot get() = current
-    val doors = listOf(Door(DOOR_KITCHEN, "Cocina", "Cocina", false), Door(DOOR_ENTRY, "Entrada", "Entrada", true), Door(DOOR_BATH, "Baño", "Baño", false))
+    val doors = listOf(
+        Door(DOOR_KITCHEN, "Cocina", "Cocina", false),
+        Door(DOOR_ENTRY, "Entrada", "Entrada", true),
+        Door(DOOR_BATH, "Baño", "Baño", false)
+    )
 
-    fun initialize(context: Context) { preferences = context.applicationContext.getSharedPreferences("guardian_preferences", Context.MODE_PRIVATE); val id = preferences?.getString(KEY_SELECTED_DOOR, DOOR_ENTRY) ?: DOOR_ENTRY; update { it.copy(selectedDoorId = id) } }
+    fun initialize(context: Context) {
+        preferences = context.applicationContext.getSharedPreferences("guardian_preferences", Context.MODE_PRIVATE)
+        val selected = preferences?.getString(KEY_SELECTED_DOOR, DOOR_ENTRY)
+        val validId = selected?.takeIf { id -> doors.any { it.id == id } } ?: DOOR_ENTRY
+        update { it.copy(selectedDoorId = validId) }
+    }
+
     fun observe(observer: (Snapshot) -> Unit) { observers.add(observer); observer(current) }
     fun removeObserver(observer: (Snapshot) -> Unit) { observers.remove(observer) }
-    fun setProfile(role: String, name: String, home: String = "Casa 01") = update { it.copy(role = if (role == ROLE_ADMIN) ROLE_ADMIN else ROLE_TUTOR, userName = name, homeName = home) }
-    fun selectDoor(id: String) { if (doors.any { it.id == id }) { preferences?.edit()?.putString(KEY_SELECTED_DOOR, id)?.apply(); update { it.copy(selectedDoorId = id) } } }
-    fun setBluetooth(state: BluetoothConnectionState) = update { it.copy(bluetoothState = state, lastDisconnectAt = if (state == BluetoothConnectionState.DISCONNECTED || state == BluetoothConnectionState.ERROR) System.currentTimeMillis() else it.lastDisconnectAt) }
-    fun acceptTelemetry(value: ArduinoTelemetry, raw: String = value.rawJson) = update { it.copy(telemetry = value, lastValidAt = System.currentTimeMillis(), lastMessage = raw, validMessages = it.validMessages + 1, lastError = "") }
-    fun invalidMessage(message: String) = update { it.copy(invalidMessages = it.invalidMessages + 1, lastError = message) }
+    fun setProfile(role: String, name: String, home: String = "Casa 01") = update {
+        it.copy(role = if (role == ROLE_ADMIN) ROLE_ADMIN else ROLE_TUTOR, userName = name.trim(), homeName = home.ifBlank { "Casa 01" })
+    }
+    fun selectDoor(id: String) {
+        if (doors.none { it.id == id }) return
+        preferences?.edit()?.putString(KEY_SELECTED_DOOR, id)?.apply()
+        update { it.copy(selectedDoorId = id) }
+    }
+    fun setBluetooth(state: BluetoothConnectionState) = update {
+        it.copy(bluetoothState = state, lastDisconnectAt = if (state == BluetoothConnectionState.DISCONNECTED || state == BluetoothConnectionState.ERROR) System.currentTimeMillis() else it.lastDisconnectAt)
+    }
+    fun acceptTelemetry(value: ArduinoTelemetry, raw: String = value.rawJson) = update {
+        it.copy(telemetry = value, lastValidAt = System.currentTimeMillis(), lastMessage = raw, validMessages = it.validMessages + 1, lastError = "")
+    }
+    fun invalidMessage(message: String) = update {
+        Log.w(LOG_TAG, "Invalid Bluetooth message: $message")
+        it.copy(invalidMessages = it.invalidMessages + 1, lastError = message)
+    }
     fun setError(message: String) = update { it.copy(lastError = message) }
     fun setAck(message: String) = update { it.copy(lastAck = message, lastMessage = message) }
     fun setDemo(enabled: Boolean) = update { it.copy(demoMode = enabled) }
-    fun updateDemo(state: String) {
-        if (!current.demoMode) return
-        val telemetry = when (state) {
-            ArduinoTelemetry.SAFE -> ArduinoTelemetry(ArduinoTelemetry.SAFE, false, 200, false, false, true, "DEMO")
-            ArduinoTelemetry.WARNING -> ArduinoTelemetry(ArduinoTelemetry.WARNING, false, 100, true, false, true, "DEMO")
-            ArduinoTelemetry.CRITICAL -> ArduinoTelemetry(ArduinoTelemetry.CRITICAL, true, 80, true, true, true, "DEMO")
-            "SENSOR_ERROR" -> ArduinoTelemetry(ArduinoTelemetry.WARNING, false, 999, true, false, false, "DEMO_SENSOR_ERROR")
-            else -> { setBluetooth(BluetoothConnectionState.DISCONNECTED); return }
+
+    fun updateDemo(scenario: String) {
+        if (!BuildConfig.DEBUG || !current.demoMode) return
+        when (scenario) {
+            "OFFLINE" -> update { it.copy(bluetoothState = BluetoothConnectionState.DISCONNECTED, telemetry = null, lastMessage = "Modo demostración: desconectado") }
+            "SENSOR_ERROR" -> {
+                val sample = ArduinoTelemetry(ArduinoTelemetry.WARNING, false, 999, true, false, false, "DEMO_SENSOR_ERROR")
+                acceptTelemetry(sample, "Modo demostración: sensor sin lectura")
+            }
+            ArduinoTelemetry.SAFE -> acceptTelemetry(ArduinoTelemetry(ArduinoTelemetry.SAFE, false, 200, false, false, true, "DEMO"), "Modo demostración: estado seguro")
+            ArduinoTelemetry.WARNING -> acceptTelemetry(ArduinoTelemetry(ArduinoTelemetry.WARNING, false, 100, true, false, true, "DEMO"), "Modo demostración: advertencia")
+            ArduinoTelemetry.CRITICAL -> acceptTelemetry(ArduinoTelemetry(ArduinoTelemetry.CRITICAL, true, 80, true, true, true, "DEMO"), "Modo demostración: alerta crítica")
+            else -> setError("Escenario de demostración no reconocido")
         }
-        acceptTelemetry(telemetry, "Modo demostración: $state")
     }
-    private fun update(transform: (Snapshot) -> Snapshot) { current = transform(current); observers.forEach { it(current) } }
+
+    private fun update(transform: (Snapshot) -> Snapshot) {
+        current = transform(current)
+        observers.forEach { observer ->
+            try { observer(current) } catch (error: RuntimeException) { Log.e(LOG_TAG, "Guardian state observer failed", error) }
+        }
+    }
 
     const val ROLE_TUTOR = "tutor"
     const val ROLE_ADMIN = "admin"
@@ -62,6 +96,7 @@ object GuardianSessionRepository {
     const val DOOR_ENTRY = "puerta-entrada"
     const val DOOR_BATH = "puerta-bano"
     private const val KEY_SELECTED_DOOR = "selectedDoorId"
+    private const val LOG_TAG = "GuardianApp"
 }
 
 class GuardianBluetoothListener : BluetoothService.Listener {

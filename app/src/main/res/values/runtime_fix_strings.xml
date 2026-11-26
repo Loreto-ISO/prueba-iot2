@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_login_error">No fue posible verificar tu perfil. Comprueba tu conexión e inténtalo nuevamente.</string>
+    <string name="navigation_error">No fue posible abrir la pantalla de inicio. Vuelve a intentarlo.</string>
+    <string name="demo_bluetooth_state">Modo demostración · Bluetooth: %1$s</string>
+    <string name="demo_state">Modo demostración: %1$s</string>
+    <string name="demo_offline_label">Modo demostración: dispositivo desconectado</string>
+</resources>
