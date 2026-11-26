@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
+
     <color name="guardian_header_blue">#07507D</color>
     <color name="guardian_header_dark">#053B63</color>
     <color name="guardian_action_blue">#075984</color>
     <color name="guardian_glow_blue">#43C4F2</color>
+
     <color name="guardian_screen_background">#F7F9FC</color>
     <color name="guardian_primary_text">#123B5D</color>
     <color name="guardian_secondary_text">#4F5F6F</color>
+
     <color name="guardian_safe_soft">#EAF8EC</color>
+
     <color name="guardian_warning_soft">#FFF7DB</color>
+    <color name="guardian_warning_text">#7A5700</color>
+
     <color name="guardian_critical_soft">#FDEBEC</color>
+
     <color name="guardian_disconnected">#73808C</color>
     <color name="guardian_neutral_soft">#EEF2F5</color>
+
     <color name="guardian_card_border">#D7DEE5</color>
     <color name="guardian_shadow">#33000000</color>
+
 </resources>
