@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets
 import java.util.UUID
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicLong
 
 /** Manages a classic Bluetooth SPP connection to a previously paired HC-05. */
 class BluetoothService(
@@ -39,6 +40,7 @@ class BluetoothService(
     private val connectExecutor: ExecutorService = Executors.newSingleThreadExecutor()
     private val ioExecutor: ExecutorService = Executors.newCachedThreadPool()
     private val socketLock = Any()
+    private val connectionAttempt = AtomicLong(0)
 
     @Volatile private var socket: BluetoothSocket? = null
     @Volatile private var outputStream: OutputStream? = null
@@ -50,13 +52,13 @@ class BluetoothService(
 
     fun isBluetoothEnabled(): Boolean = try {
         adapter?.isEnabled == true
-    } catch (error: SecurityException) {
+    } catch (_: SecurityException) {
         false
     }
 
     @SuppressLint("MissingPermission")
     fun getPairedDevices(): List<BluetoothDevice> {
-        if (BuildPermission.requiresConnectPermission() &&
+        if (requiresConnectPermission() &&
             ContextCompat.checkSelfPermission(appContext, Manifest.permission.BLUETOOTH_CONNECT) !=
             PackageManager.PERMISSION_GRANTED
         ) {
@@ -74,61 +76,77 @@ class BluetoothService(
     }
 
     fun connect(device: BluetoothDevice) {
-        if (BuildPermission.requiresConnectPermission() &&
+        if (requiresConnectPermission() &&
             ContextCompat.checkSelfPermission(appContext, Manifest.permission.BLUETOOTH_CONNECT) !=
             PackageManager.PERMISSION_GRANTED
         ) {
             reportError("Falta el permiso Bluetooth para Android 12 o superior")
+            publishState(BluetoothConnectionState.ERROR)
             return
         }
         if (!isBluetoothAvailable) {
             reportError("Este dispositivo no dispone de Bluetooth")
+            publishState(BluetoothConnectionState.ERROR)
             return
         }
 
+        val attempt = connectionAttempt.incrementAndGet()
         publishState(BluetoothConnectionState.CONNECTING)
         connectExecutor.execute {
             closeCurrentSocket()
+            if (attempt != connectionAttempt.get()) return@execute
+
             var candidate: BluetoothSocket? = null
             try {
                 if (!device.name.equals(HC05_DEVICE_NAME, ignoreCase = true)) {
                     throw IOException("Selecciona un dispositivo cuyo nombre sea HC-05")
                 }
-                candidate = device.createRfcommSocketToServiceRecord(SPP_UUID)
+                val newSocket = device.createRfcommSocketToServiceRecord(SPP_UUID)
+                candidate = newSocket
                 synchronized(socketLock) {
-                    socket = candidate
+                    if (attempt != connectionAttempt.get()) {
+                        newSocket.close()
+                        return@execute
+                    }
+                    socket = newSocket
                     outputStream = null
                 }
-                candidate.connect()
-                val input = candidate.inputStream
-                val output = candidate.outputStream
+
+                // Blocking Bluetooth operations run on connectExecutor, never the UI thread.
+                newSocket.connect()
+                val input = newSocket.inputStream
+                val output = newSocket.outputStream
                 synchronized(socketLock) {
-                    if (socket !== candidate) {
-                        candidate.close()
+                    if (attempt != connectionAttempt.get() || socket !== newSocket) {
+                        newSocket.close()
                         return@execute
                     }
                     outputStream = output
                 }
                 publishState(BluetoothConnectionState.CONNECTED)
-                val connectedSocket = candidate
-                ioExecutor.execute { readMessages(connectedSocket, input) }
+                ioExecutor.execute { readMessages(newSocket, input) }
             } catch (error: IOException) {
-                candidate?.let { handleConnectionFailure(it, error) }
-                    ?: run {
-                        reportError(error.localizedMessage ?: "No se pudo conectar al HC-05")
-                        publishState(BluetoothConnectionState.ERROR)
-                    }
-            } catch (error: SecurityException) {
-                candidate?.let { handleConnectionFailure(it, error) }
-                    ?: run {
-                        reportError("Permiso Bluetooth denegado")
-                        publishState(BluetoothConnectionState.ERROR)
-                    }
+                val failedSocket = candidate
+                if (failedSocket != null) {
+                    handleConnectionFailure(failedSocket, error)
+                } else if (attempt == connectionAttempt.get()) {
+                    reportError(error.localizedMessage ?: "No se pudo conectar al HC-05")
+                    publishState(BluetoothConnectionState.ERROR)
+                }
+            } catch (_: SecurityException) {
+                val failedSocket = candidate
+                if (failedSocket != null) {
+                    handleConnectionFailure(failedSocket, IOException("Permiso Bluetooth denegado"))
+                } else if (attempt == connectionAttempt.get()) {
+                    reportError("Permiso Bluetooth denegado")
+                    publishState(BluetoothConnectionState.ERROR)
+                }
             }
         }
     }
 
     fun disconnect() {
+        connectionAttempt.incrementAndGet()
         val oldSocket: BluetoothSocket?
         synchronized(socketLock) {
             oldSocket = socket
@@ -189,7 +207,9 @@ class BluetoothService(
                     val value = reader.read()
                     if (value == -1) throw IOException("El HC-05 cerró la conexión")
                     if (value == '\n'.code) {
-                        if (!discardingLongLine) processLine(connectedSocket, line.toString().removeSuffix("\r"))
+                        if (!discardingLongLine) {
+                            processLine(connectedSocket, line.toString().removeSuffix("\r"))
+                        }
                         line.setLength(0)
                         discardingLongLine = false
                     } else if (!discardingLongLine) {
@@ -270,10 +290,8 @@ class BluetoothService(
         listener.onProtocolError(message)
     }
 
-    private object BuildPermission {
-        fun requiresConnectPermission(): Boolean =
-            android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S
-    }
+    private fun requiresConnectPermission(): Boolean =
+        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S
 
     companion object {
         const val HC05_DEVICE_NAME = "HC-05"
