@@ -6,6 +6,7 @@ plugins {
 android {
     namespace = "com.example.myapplication"
 
+    // Requerido por androidx.core 1.19.1
     compileSdk {
         version = release(37)
     }
@@ -16,8 +17,13 @@ android {
 
     defaultConfig {
         applicationId = "com.example.myapplication"
+
+        // Android 7.0 o superior
         minSdk = 24
-        targetSdk = 37
+
+        // Android 16 como comportamiento objetivo estable
+        targetSdk = 36
+
         versionCode = 1
         versionName = "1.0"
 
@@ -26,16 +32,19 @@ android {
     }
 
     buildTypes {
-        release {
-            optimization {
-                enable = true
+        debug {
+            isDebuggable = true
+        }
 
-                packageScope = setOf(
-                    "androidx.**",
-                    "kotlin.**",
-                    "kotlinx.**"
-                )
-            }
+        release {
+            isMinifyEnabled = false
+
+            proguardFiles(
+                getDefaultProguardFile(
+                    "proguard-android-optimize.txt"
+                ),
+                "proguard-rules.pro"
+            )
         }
     }
 
