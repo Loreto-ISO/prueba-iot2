@@ -38,6 +38,7 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         setContentView(R.layout.activity_dashboard)
+        addBluetoothConnectionButton()
 
         tvStatus = findViewById(R.id.tvStatus)
         tvDistance = findViewById(R.id.tvDistance)
@@ -50,6 +51,25 @@ class DashboardActivity : AppCompatActivity() {
         setupControlButtons()
         setupBottomNavigation()
         observeDeviceState()
+    }
+
+    private fun addBluetoothConnectionButton() {
+        val content = findViewById<LinearLayout>(android.R.id.content)
+        val root = content.getChildAt(0) as? LinearLayout ?: return
+        val button = Button(this).apply {
+            text = "Conexión Bluetooth HC-05"
+            setOnClickListener {
+                startActivity(Intent(this@DashboardActivity, BluetoothConnectionActivity::class.java))
+            }
+        }
+        root.addView(
+            button,
+            1,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        )
     }
 
     private fun setupControlButtons() {

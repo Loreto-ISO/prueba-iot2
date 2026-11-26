@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1F5F9"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvBluetoothTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="GUARDIANAPP"
+        android:textColor="#0F294A"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvBluetoothConnectionState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:padding="12dp"
+        android:text="Estado Bluetooth: DISCONNECTED"
+        android:textColor="#1E293B"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Dispositivos Bluetooth emparejados (selecciona HC-05):"
+        android:textColor="#475569"
+        android:textSize="14sp" />
+
+    <ListView
+        android:id="@+id/lvPairedBluetoothDevices"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:choiceMode="singleChoice"
+        android:divider="#CBD5E1"
+        android:dividerHeight="1dp" />
+
+    <Button
+        android:id="@+id/btnBluetoothConnect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:enabled="false"
+        android:text="Conectar" />
+
+    <Button
+        android:id="@+id/btnBluetoothDisconnect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="Desconectar" />
+
+    <TextView
+        android:id="@+id/tvBluetoothMessages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#FEF2F2"
+        android:padding="10dp"
+        android:textColor="#B91C1C"
+        android:textSize="13sp"
+        android:visibility="gone" />
+</LinearLayout>
