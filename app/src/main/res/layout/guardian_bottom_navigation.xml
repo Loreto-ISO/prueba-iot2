@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="64dp" android:orientation="horizontal" android:gravity="center" android:background="@color/white" android:elevation="6dp">
+ <Button android:id="@+id/navHome" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="@string/nav_home" android:contentDescription="@string/nav_home" />
+ <Button android:id="@+id/navSearch" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="@string/nav_search" android:contentDescription="@string/nav_search" />
+ <Button android:id="@+id/navProfile" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="@string/nav_profile" android:contentDescription="@string/nav_profile" />
+</LinearLayout>
