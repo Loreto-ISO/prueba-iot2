@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_header_tutor">BIENVENIDO TUTOR</string>
+    <string name="home_header_named">BIENVENIDO, %1$s</string>
+    <string name="home_header_admin">PANEL ADMINISTRADOR</string>
+    <string name="home_header_fallback">BIENVENIDO TUTOR</string>
+    <string name="home_house_short">CASA 01</string>
+    <string name="status_title_closed">CERRADA</string>
+    <string name="status_description_closed">Puerta asegurada</string>
+    <string name="status_title_warning">PRECAUCIÓN</string>
+    <string name="status_description_warning">Se detecta movimiento cerca de la puerta %1$s</string>
+    <string name="status_title_open">ABIERTA</string>
+    <string name="status_description_open">Alerta: puerta abierta, verificar estado</string>
+    <string name="status_title_disconnected">DESCONECTADA</string>
+    <string name="status_description_disconnected">Conecta el dispositivo para recibir información</string>
+    <string name="status_title_connected">CONECTADA</string>
+    <string name="status_description_waiting">Esperando información del dispositivo</string>
+    <string name="status_title_sensor_error">SIN LECTURA</string>
+    <string name="status_description_sensor_error">Verifica la conexión del sensor</string>
+    <string name="status_mode_demo">Modo demostración</string>
+    <string name="status_demo_disconnected">Modo demostración · dispositivo desconectado</string>
+    <string name="status_bluetooth_label">Estado Bluetooth</string>
+    <string name="status_distance_label">Distancia</string>
+    <string name="status_sensor_label">Sensor</string>
+    <string name="status_door_label">Puerta</string>
+    <string name="status_light_label">LED</string>
+    <string name="status_buzzer_label">Buzzer</string>
+    <string name="status_last_update_label">Última actualización</string>
+    <string name="action_connect_bluetooth">Conectar dispositivo Bluetooth</string>
+    <string name="action_search_doors">Buscar puertas</string>
+    <string name="action_profile">Perfil</string>
+    <string name="admin_diagnostics_title">Información técnica</string>
+    <string name="state_icon_closed">Icono de candado cerrado, puerta asegurada</string>
+    <string name="state_icon_warning">Icono de advertencia, movimiento detectado</string>
+    <string name="state_icon_open">Icono de candado abierto, puerta abierta</string>
+    <string name="state_icon_disconnected">Icono de Bluetooth desconectado</string>
+    <string name="state_icon_sensor_error">Icono de sensor sin lectura</string>
+    <string name="nav_icon_home">Inicio</string>
+    <string name="nav_icon_search">Buscar puertas</string>
+    <string name="nav_icon_profile">Perfil</string>
+</resources>

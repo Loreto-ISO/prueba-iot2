@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="selected_door_default">Puerta seleccionada: Entrada</string>
+    <string name="status_bluetooth_value">Estado Bluetooth: %1$s</string>
+    <string name="status_door_value">Puerta: %1$s</string>
+    <string name="status_distance_value">Distancia: %1$s</string>
+    <string name="status_sensor_value">Sensor: %1$s</string>
+    <string name="status_led_value">LED: %1$s</string>
+    <string name="status_buzzer_value">Buzzer: %1$s</string>
+    <string name="status_last_update_value">Última actualización: %1$s</string>
+    <string name="status_distance_pending">Distancia: Sin datos</string>
+    <string name="status_led_pending">LED: Sin datos</string>
+    <string name="status_buzzer_pending">Buzzer: Sin datos</string>
+    <string name="status_last_update_pending">Última actualización: Sin lectura previa</string>
+    <string name="state_icon_connected">Bluetooth conectado, esperando información</string>
+    <string name="demo_offline_marker">Modo demostración · dispositivo desconectado</string>
+    <string name="demo_message_prefix">Modo demostración</string>
+</resources>
