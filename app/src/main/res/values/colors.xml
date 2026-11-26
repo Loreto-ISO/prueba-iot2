@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color><color name="white">#FFFFFFFF</color>
+    <color name="security_navy">#12355B</color><color name="guardian_blue">#1D5D9B</color><color name="guardian_blue_light">#2F80ED</color>
+    <color name="guardian_background">#F4F7FA</color><color name="guardian_text">#17212B</color><color name="guardian_secondary">#5B6770</color>
+    <color name="guardian_safe">#198754</color><color name="guardian_warning">#D98E04</color><color name="guardian_critical">#C62828</color><color name="guardian_border">#D9E1E8</color>
 </resources>

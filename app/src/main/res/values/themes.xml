@@ -1,9 +1,7 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.GuardianApp" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/guardian_blue</item><item name="colorPrimaryDark">@color/security_navy</item><item name="colorAccent">@color/guardian_blue_light</item><item name="android:fontFamily">sans</item><item name="android:windowLightStatusBar">true</item><item name="android:statusBarColor">@color/white</item><item name="android:navigationBarColor">@color/white</item><item name="android:windowBackground">@color/white</item>
     </style>
-
-    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
+    <style name="Base.Theme.MyApplication" parent="Theme.GuardianApp"/><style name="Theme.MyApplication" parent="Base.Theme.MyApplication"/>
 </resources>

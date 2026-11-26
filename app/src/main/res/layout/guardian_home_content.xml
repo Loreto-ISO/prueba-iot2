@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="@color/guardian_background">
+ <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+  <ImageView android:layout_width="42dp" android:layout_height="42dp" android:src="@drawable/logo_guardianapp" android:contentDescription="@string/app_name" />
+  <TextView android:id="@+id/tvScreenTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/welcome_default" android:textColor="@color/security_navy" android:textSize="23sp" android:textStyle="bold" android:layout_marginTop="12dp" />
+  <TextView android:id="@+id/tvHomeName" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/home_name_default" android:textColor="@color/guardian_secondary" android:layout_marginTop="4dp" />
+  <TextView android:id="@+id/tvSelectedDoor" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/no_data" android:textColor="@color/guardian_blue" android:textSize="18sp" android:textStyle="bold" android:layout_marginTop="22dp" />
+  <TextView android:id="@+id/tvOverallState" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="72dp" android:gravity="center_vertical" android:padding="16dp" android:background="@drawable/bg_guardian_card" android:text="@string/device_offline" android:textColor="@color/guardian_text" android:textSize="22sp" android:textStyle="bold" android:layout_marginTop="12dp" />
+  <TextView android:id="@+id/tvBluetoothState" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/bluetooth_disconnected" android:textColor="@color/guardian_secondary" android:layout_marginTop="12dp" />
+  <TextView android:id="@+id/tvDoorState" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/no_data" android:layout_marginTop="16dp" />
+  <TextView android:id="@+id/tvDistance" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/no_data" android:layout_marginTop="6dp" />
+  <TextView android:id="@+id/tvLed" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/no_data" android:layout_marginTop="6dp" />
+  <TextView android:id="@+id/tvBuzzer" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/no_data" android:layout_marginTop="6dp" />
+  <TextView android:id="@+id/tvSensor" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/sensor_pending" android:layout_marginTop="6dp" />
+  <TextView android:id="@+id/tvLastRead" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/no_data" android:layout_marginTop="6dp" />
+  <TextView android:id="@+id/tvTechnicalDetails" android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="gone" android:padding="12dp" android:layout_marginTop="10dp" />
+  <Button android:id="@+id/btnOpenBluetooth" android:layout_width="match_parent" android:layout_height="52dp" android:text="@string/connect_bluetooth" android:textColor="@color/white" android:backgroundTint="@color/guardian_blue" android:layout_marginTop="18dp" />
+  <Button android:id="@+id/btnFindDoors" android:layout_width="match_parent" android:layout_height="48dp" android:text="@string/find_doors" />
+  <Button android:id="@+id/btnOpenProfile" android:layout_width="match_parent" android:layout_height="48dp" android:text="@string/open_profile" />
+  <Button android:id="@+id/btnDiagnostics" android:layout_width="match_parent" android:layout_height="48dp" android:text="@string/open_diagnostics" android:visibility="gone" />
+ </LinearLayout></ScrollView>
+ <include layout="@layout/guardian_bottom_navigation" />
+</LinearLayout>
