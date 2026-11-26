@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<include
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    layout="@layout/guardian_home_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/tutorHomeContent"
+        layout="@layout/guardian_home_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>
